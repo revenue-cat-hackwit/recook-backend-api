@@ -7,12 +7,12 @@ import User from '@/models/User'
 
 export async function POST(request: NextRequest) {
   try {
-    const { token, newPassword } = await request.json()
+    const { email, otp, newPassword } = await request.json()
 
     // Validation
-    if (!token || !newPassword) {
+    if (!email || !otp || !newPassword) {
       return NextResponse.json(
-        { success: false, message: 'Token and new password are required' },
+        { success: false, message: 'Email, OTP, and new password are required' },
         { status: 400 }
       )
     }
@@ -27,15 +27,34 @@ export async function POST(request: NextRequest) {
     // Connect to database
     await connectDB()
 
-    // Find user with valid reset token
-    const user = await User.findOne({
-      resetPasswordToken: token,
-      resetPasswordExpiry: { $gt: new Date() },
-    })
+    // Find user by email
+    const user = await User.findOne({ email })
 
     if (!user) {
       return NextResponse.json(
-        { success: false, message: 'Invalid or expired reset token' },
+        { success: false, message: 'User not found' },
+        { status: 404 }
+      )
+    }
+
+    // Check OTP
+    if (!user.resetPasswordOtp || !user.resetPasswordOtpExpiry) {
+      return NextResponse.json(
+        { success: false, message: 'No password reset request found. Please request a new OTP.' },
+        { status: 400 }
+      )
+    }
+
+    if (user.resetPasswordOtp !== otp) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid OTP' },
+        { status: 400 }
+      )
+    }
+
+    if (new Date() > user.resetPasswordOtpExpiry) {
+      return NextResponse.json(
+        { success: false, message: 'OTP has expired. Please request a new one.' },
         { status: 400 }
       )
     }
@@ -43,10 +62,10 @@ export async function POST(request: NextRequest) {
     // Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10)
 
-    // Update password and clear reset token
+    // Update password and clear reset OTP
     user.password = hashedPassword
-    user.resetPasswordToken = undefined
-    user.resetPasswordExpiry = undefined
+    user.resetPasswordOtp = undefined
+    user.resetPasswordOtpExpiry = undefined
     await user.save()
 
     return NextResponse.json(

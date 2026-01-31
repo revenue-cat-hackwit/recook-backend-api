@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mongoConnect'
 import User from '@/models/User'
-import { generateResetToken } from '@/lib/jwt'
+import { generateOTP } from '@/lib/jwt'
 import { sendPasswordResetEmail } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
@@ -34,18 +34,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generate reset token
-    const resetToken = generateResetToken()
-    const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+    // Generate reset OTP
+    const resetOtp = generateOTP()
+    const resetOtpExpiry = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
 
-    // Save reset token
-    user.resetPasswordToken = resetToken
-    user.resetPasswordExpiry = resetTokenExpiry
+    // Save reset OTP
+    user.resetPasswordOtp = resetOtp
+    user.resetPasswordOtpExpiry = resetOtpExpiry
     await user.save()
 
     // Send reset email
     try {
-      await sendPasswordResetEmail(email, resetToken, user.username)
+      await sendPasswordResetEmail(email, resetOtp, user.username)
     } catch (emailError) {
       console.error('Error sending password reset email:', emailError)
       return NextResponse.json(
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: 'Password reset link has been sent to your email',
+        message: 'Password reset OTP has been sent to your email',
       },
       { status: 200 }
     )
