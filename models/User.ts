@@ -4,26 +4,33 @@ import mongoose, { Schema, model, models, Model, Document } from 'mongoose'
 export interface IUser extends Document {
 	username: string
 	email: string
-	password: string
+	password?: string
 	isVerified: boolean
 	otp?: string
 	otpExpiry?: Date
 	resetPasswordOtp?: string
 	resetPasswordOtpExpiry?: Date
+	// OAuth fields
+	provider?: 'local' | 'google'
+	googleId?: string
+	image?: string
 	createdAt?: Date
 	updatedAt?: Date
 }
 
 const UserSchema = new Schema<IUser>(
 	{
-		username: { type: String, required: true, unique: true, trim: true },
+		username: { type: String, required: true, trim: true },
 		email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-		password: { type: String, required: true },
+		password: { type: String },
 		isVerified: { type: Boolean, default: false },
 		otp: { type: String },
 		otpExpiry: { type: Date },
 		resetPasswordOtp: { type: String },
 		resetPasswordOtpExpiry: { type: Date },
+		provider: { type: String, enum: ['local', 'google'], default: 'local' },
+		googleId: { type: String, unique: true, sparse: true },
+		image: { type: String },
 	},
 	{ timestamps: true }
 )
