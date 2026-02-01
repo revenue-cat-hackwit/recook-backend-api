@@ -1,6 +1,7 @@
 // @/app/api/personalization/static/taste-preferences/route.ts
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { corsWrapper } from '@/lib/cors'
 
 const tastePreferences = [
   { _id: '64a7f3b2c3d4e5f678901251', name: 'Too Spicy', imageUrl: 'https://res.cloudinary.com/dy4hqxkv1/image/upload/v1769855455/image_47_yzmcs1.png' },
@@ -11,6 +12,8 @@ const tastePreferences = [
   { _id: '64a7f3b2c3d4e5f678901256', name: 'Sour / Acidic', imageUrl: 'https://res.cloudinary.com/dy4hqxkv1/image/upload/v1769855459/image_52_vk2t3i.png' }
 ]
 
-export async function GET() {
+async function handler(req: NextRequest) {
   return NextResponse.json(tastePreferences)
 }
+
+export const GET = corsWrapper(handler)

@@ -1,6 +1,7 @@
 // @/app/api/personalization/static/whats-in-your-kitchen/route.ts
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { corsWrapper } from '@/lib/cors'
 
 const whatsInYourKitchen = [
   { _id: '64a7f4b2c3d4e5f678901261', name: 'Pressure cooker', imageUrl: 'https://res.cloudinary.com/dy4hqxkv1/image/upload/v1769855552/image_59_xol2cz.png' },
@@ -13,6 +14,8 @@ const whatsInYourKitchen = [
   { _id: '64a7f4b2c3d4e5f678901268', name: 'Grill Pan', imageUrl: 'https://res.cloudinary.com/dy4hqxkv1/image/upload/v1769855558/image_67_c4njti.png' }
 ]
 
-export async function GET() {
+async function handler(req: NextRequest) {
   return NextResponse.json(whatsInYourKitchen)
 }
+
+export const GET = corsWrapper(handler)

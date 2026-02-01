@@ -1,6 +1,7 @@
 // @/app/api/personalization/static/food-allergies/route.ts
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { corsWrapper } from '@/lib/cors'
 
 const foodAlergies = [
   { _id: '64a7f2b2c3d4e5f678901241', name: 'Peanuts', imageUrl: 'https://res.cloudinary.com/dy4hqxkv1/image/upload/v1769855396/image_54_fkn8ep.png' },
@@ -9,6 +10,8 @@ const foodAlergies = [
   { _id: '64a7f2b2c3d4e5f678901244', name: 'Gluten', imageUrl: 'https://res.cloudinary.com/dy4hqxkv1/image/upload/v1769855396/image_58_gxbmhs.png' }
 ]
 
-export async function GET() {
+async function handler(req: NextRequest) {
   return NextResponse.json(foodAlergies)
 }
+
+export const GET = corsWrapper(handler)

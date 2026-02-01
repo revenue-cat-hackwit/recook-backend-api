@@ -5,8 +5,9 @@ import connectDB from '@/lib/mongoConnect'
 import User from '@/models/User'
 import { generateOTP } from '@/lib/jwt'
 import { sendPasswordResetEmail } from '@/lib/email'
+import { corsWrapper } from '@/lib/cors'
 
-export async function POST(request: NextRequest) {
+async function handler(request: NextRequest) {
   try {
     const { email } = await request.json()
 
@@ -69,3 +70,5 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+export const POST = corsWrapper(handler)

@@ -1,6 +1,7 @@
 // @/app/api/personalization/static/favorite-cuisines/route.ts
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { corsWrapper } from '@/lib/cors'
 
 const favoriteCuisines = [
   { _id: '64a7f1b2c3d4e5f678901234', name: 'Indonesia', imageUrl: 'https://res.cloudinary.com/dy4hqxkv1/image/upload/v1769855258/image_39_alba4b.png' },
@@ -11,6 +12,8 @@ const favoriteCuisines = [
   { _id: '64a7f1b2c3d4e5f678901239', name: 'Thailand', imageUrl: 'https://res.cloudinary.com/dy4hqxkv1/image/upload/v1769855258/Group_427318917_dc9ama.png' },
 ]
 
-export async function GET() {
+async function handler(req: NextRequest) {
   return NextResponse.json(favoriteCuisines)
 }
+
+export const GET = corsWrapper(handler)

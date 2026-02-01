@@ -96,3 +96,5 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+export const POST = corsWrapper(handler)
