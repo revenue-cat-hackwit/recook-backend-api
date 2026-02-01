@@ -24,8 +24,15 @@ async function handleGet(req: AuthenticatedRequest) {
 
 		await connectDB()
 
-		// Ensure User model is registered
-		User.modelName
+		// Get current user info for AppBar
+		const currentUser = await User.findById(userId).select('avatar fullName username')
+		
+		if (!currentUser) {
+			return NextResponse.json(
+				{ success: false, message: 'User not found' },
+				{ status: 404 }
+			)
+		}
 
 		// Get pagination parameters
 		const { searchParams } = new URL(req.url)
@@ -47,10 +54,10 @@ async function handleGet(req: AuthenticatedRequest) {
 		const formattedPosts = posts.map((post) => ({
 			id: post._id,
 			content: post.content,
-			imageUrl: post.imageUrl,
+			imageUrl: post.imageUrl || null,
 			user: {
 				id: (post.userId as any)._id,
-				avatar: (post.userId as any).avatar,
+				avatar: (post.userId as any).avatar || null,
 				fullName: (post.userId as any).fullName,
 				username: (post.userId as any).username,
 			},
@@ -68,6 +75,12 @@ async function handleGet(req: AuthenticatedRequest) {
 				success: true,
 				message: 'Feeds retrieved successfully',
 				data: {
+					currentUser: {
+						id: currentUser._id,
+						avatar: currentUser.avatar || null,
+						fullName: currentUser.fullName,
+						username: currentUser.username,
+					},
 					posts: formattedPosts,
 					pagination: {
 						currentPage: page,
