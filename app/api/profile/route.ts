@@ -4,13 +4,14 @@ import { NextResponse } from 'next/server'
 import { withAuth, AuthenticatedRequest } from '@/lib/authMiddleware'
 import connectDB from '@/lib/mongoConnect'
 import User from '@/models/User'
+import Post from '@/models/Post'
 
 async function handler(req: AuthenticatedRequest) {
   try {
     await connectDB()
 
     // Get user from database
-    const user = await User.findById(req.user?.userId).select('-password -otp -otpExpiry -resetPasswordToken -resetPasswordExpiry')
+    const user = await User.findById(req.user?.userId).select('-password -otp -otpExpiry -resetPasswordOtp -resetPasswordOtpExpiry')
 
     if (!user) {
       return NextResponse.json(
@@ -18,6 +19,9 @@ async function handler(req: AuthenticatedRequest) {
         { status: 404 }
       )
     }
+
+    // Count posts
+    const postsCount = await Post.countDocuments({ userId: user._id })
 
     return NextResponse.json(
       {
@@ -31,6 +35,9 @@ async function handler(req: AuthenticatedRequest) {
             avatar: user.avatar,
             bio: user.bio,
             isVerified: user.isVerified,
+            followersCount: user.followers.length,
+            followingCount: user.following.length,
+            postsCount,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
           },

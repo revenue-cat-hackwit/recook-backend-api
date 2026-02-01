@@ -1,5 +1,5 @@
 // @/models/User.ts
-import mongoose, { Schema, model, models, Model, Document } from 'mongoose'
+import mongoose, { Schema, model, models, Model, Document, Types } from 'mongoose'
 
 export interface IUser extends Document {
 	username: string
@@ -9,6 +9,8 @@ export interface IUser extends Document {
 	avatar?: string
 	bio?: string
 	isVerified: boolean
+	following: Types.ObjectId[]
+	followers: Types.ObjectId[]
 	otp?: string
 	otpExpiry?: Date
 	resetPasswordOtp?: string
@@ -26,6 +28,8 @@ const UserSchema = new Schema<IUser>(
 		avatar: { type: String },
 		bio: { type: String, trim: true, maxlength: 300 },
 		isVerified: { type: Boolean, default: false },
+		following: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
+		followers: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
 		otp: { type: String },
 		otpExpiry: { type: Date },
 		resetPasswordOtp: { type: String },
