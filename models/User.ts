@@ -11,6 +11,7 @@ export interface IUser extends Document {
 	isVerified: boolean
 	following: Types.ObjectId[]
 	followers: Types.ObjectId[]
+	savedPosts: Types.ObjectId[]
 	otp?: string
 	otpExpiry?: Date
 	resetPasswordOtp?: string
@@ -30,6 +31,7 @@ const UserSchema = new Schema<IUser>(
 		isVerified: { type: Boolean, default: false },
 		following: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
 		followers: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
+		savedPosts: [{ type: Schema.Types.ObjectId, ref: 'Post', default: [] }],
 		otp: { type: String },
 		otpExpiry: { type: Date },
 		resetPasswordOtp: { type: String },
