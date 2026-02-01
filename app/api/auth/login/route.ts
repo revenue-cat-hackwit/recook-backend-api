@@ -63,7 +63,10 @@ export async function POST(request: NextRequest) {
           user: {
             id: user._id,
             username: user.username,
+            fullName: user.fullName,
             email: user.email,
+            avatar: user.avatar,
+            bio: user.bio,
             isVerified: user.isVerified,
           },
         },

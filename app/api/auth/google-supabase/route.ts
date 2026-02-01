@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     const email = user.email
-    const fullName = user.user_metadata?.full_name || user.email.split('@')[0]
+    const displayName = user.user_metadata?.full_name || user.email.split('@')[0]
     const avatarUrl = user.user_metadata?.avatar_url || null
 
     // Connect to database
@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
       if (avatarUrl && avatarUrl !== existingUser.avatar) {
         existingUser.avatar = avatarUrl
       }
-      if (fullName && fullName !== existingUser.username) {
-        existingUser.username = fullName
+      if (displayName && displayName !== existingUser.fullName) {
+        existingUser.fullName = displayName
       }
       existingUser.isVerified = true
       await existingUser.save()
@@ -55,8 +55,10 @@ export async function POST(request: NextRequest) {
             user: {
               id: existingUser._id,
               username: existingUser.username,
+              fullName: existingUser.fullName,
               email: existingUser.email,
               avatar: existingUser.avatar,
+              bio: existingUser.bio,
               isVerified: existingUser.isVerified,
             },
           },
@@ -65,16 +67,17 @@ export async function POST(request: NextRequest) {
       )
     } else {
       // Create new user (register)
-      // Generate unique username if fullName already exists
-      let username = fullName
+      // Generate unique username from email
+      let username = email.split('@')[0]
       let counter = 1
       while (await User.findOne({ username })) {
-        username = `${fullName}${counter}`
+        username = `${email.split('@')[0]}${counter}`
         counter++
       }
 
       const newUser = await User.create({
         username,
+        fullName: displayName,
         email,
         password: Math.random().toString(36).substring(2, 15), // Random password (not used)
         avatar: avatarUrl,
@@ -97,8 +100,10 @@ export async function POST(request: NextRequest) {
             user: {
               id: newUser._id,
               username: newUser.username,
+              fullName: newUser.fullName,
               email: newUser.email,
               avatar: newUser.avatar,
+              bio: newUser.bio,
               isVerified: newUser.isVerified,
             },
           },

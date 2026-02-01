@@ -9,10 +9,10 @@ import { sendOTPEmail } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, email, password } = await request.json()
+    const { username, fullName, email, password } = await request.json()
 
     // Validation
-    if (!username || !email || !password) {
+    if (!username || !fullName || !email || !password) {
       return NextResponse.json(
         { success: false, message: 'All fields are required' },
         { status: 400 }
@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
     // Create user
     const user = await User.create({
       username,
+      fullName,
       email,
       password: hashedPassword,
       isVerified: false,

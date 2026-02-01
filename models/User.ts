@@ -3,9 +3,11 @@ import mongoose, { Schema, model, models, Model, Document } from 'mongoose'
 
 export interface IUser extends Document {
 	username: string
+	fullName: string
 	email: string
 	password: string
 	avatar?: string
+	bio?: string
 	isVerified: boolean
 	otp?: string
 	otpExpiry?: Date
@@ -18,9 +20,11 @@ export interface IUser extends Document {
 const UserSchema = new Schema<IUser>(
 	{
 		username: { type: String, required: true, unique: true, trim: true },
+		fullName: { type: String, required: true, trim: true },
 		email: { type: String, required: true, unique: true, lowercase: true, trim: true },
 		password: { type: String, required: true },
 		avatar: { type: String },
+		bio: { type: String, trim: true, maxlength: 300 },
 		isVerified: { type: Boolean, default: false },
 		otp: { type: String },
 		otpExpiry: { type: Date },
@@ -30,6 +34,7 @@ const UserSchema = new Schema<IUser>(
 	{ timestamps: true }
 )
 
-const User: Model<IUser> = (models.User as Model<IUser>) || model<IUser>('User', UserSchema)
+const User: Model<IUser> =
+	(models.User as Model<IUser>) || model<IUser>('User', UserSchema)
 
 export default User

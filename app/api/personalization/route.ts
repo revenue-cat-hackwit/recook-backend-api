@@ -118,5 +118,86 @@ async function handleGET(req: AuthenticatedRequest) {
   }
 }
 
+async function handlePATCH(req: AuthenticatedRequest) {
+  try {
+    const userId = req.user?.userId
+
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, message: 'User ID not found' },
+        { status: 401 }
+      )
+    }
+
+    const body = await req.json()
+    const { favoriteCuisines, tastePreferences, foodAllergies, whatsInYourKitchen, otherTools } = body
+
+    await connectDB()
+
+    // Check if personalization exists
+    const existingPersonalization = await Personalization.findOne({ userId })
+
+    if (!existingPersonalization) {
+      return NextResponse.json(
+        { success: false, message: 'Personalization not found. Please create one first using POST.' },
+        { status: 404 }
+      )
+    }
+
+    // Build update object with only provided fields
+    const updateFields: any = {}
+    if (favoriteCuisines !== undefined) updateFields.favoriteCuisines = favoriteCuisines
+    if (tastePreferences !== undefined) updateFields.tastePreferences = tastePreferences
+    if (foodAllergies !== undefined) updateFields.foodAllergies = foodAllergies
+    if (whatsInYourKitchen !== undefined) updateFields.whatsInYourKitchen = whatsInYourKitchen
+    if (otherTools !== undefined) updateFields.otherTools = otherTools
+
+    if (Object.keys(updateFields).length === 0) {
+      return NextResponse.json(
+        { success: false, message: 'No fields to update' },
+        { status: 400 }
+      )
+    }
+
+    // Update only specified fields
+    const personalization = await Personalization.findOneAndUpdate(
+      { userId },
+      { $set: updateFields },
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Personalization updated successfully',
+        data: {
+          personalization: {
+            id: personalization._id,
+            userId: personalization.userId,
+            favoriteCuisines: personalization.favoriteCuisines,
+            tastePreferences: personalization.tastePreferences,
+            foodAllergies: personalization.foodAllergies,
+            whatsInYourKitchen: personalization.whatsInYourKitchen,
+            otherTools: personalization.otherTools,
+            createdAt: personalization.createdAt,
+            updatedAt: personalization.updatedAt,
+          },
+        },
+      },
+      { status: 200 }
+    )
+  } catch (error) {
+    console.error('Personalization PATCH error:', error)
+    return NextResponse.json(
+      { success: false, message: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+
 export const POST = withAuth(handlePOST)
 export const GET = withAuth(handleGET)
+export const PATCH = withAuth(handlePATCH)
