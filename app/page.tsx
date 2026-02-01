@@ -10,7 +10,7 @@ const HomePage = () => {
           <div className="bg-gradient-to-br from-[#8BD65E] to-[#6FB84A] px-8 py-12 text-center">
             <div className="text-5xl mb-4">🍽️</div>
             <h1 className="text-white text-4xl font-normal tracking-tight mb-3">
-              Pirinku API
+              ReCook API
             </h1>
             <p className="text-white text-lg font-normal opacity-95">
               Backend Service for Your Personalized Recipe Assistant
@@ -22,10 +22,10 @@ const HomePage = () => {
             <div className="space-y-6">
               <div>
                 <h2 className="text-gray-800 text-2xl font-normal mb-4">
-                  Welcome to Pirinku API
+                  Welcome to ReCook API
                 </h2>
                 <p className="text-gray-600 text-base font-normal leading-relaxed">
-                  This is the backend API service powering the Pirinku application. 
+                  This is the backend API service powering the ReCook application. 
                   Access comprehensive endpoints for authentication, user management, 
                   and personalized recipe recommendations.
                 </p>
@@ -106,7 +106,7 @@ const HomePage = () => {
               This is an automated API service. For support, contact the development team.
             </p>
             <p className="text-gray-400 text-xs font-normal mt-2">
-              © {new Date().getFullYear()} Pirinku. All rights reserved.
+              © {new Date().getFullYear()} ReCook. All rights reserved.
             </p>
           </div>
         </div>

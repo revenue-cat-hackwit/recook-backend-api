@@ -1,4 +1,4 @@
-# Pirinku Authentication System
+# ReCook Authentication System
 
 Complete authentication system with JWT, OTP verification, and password reset functionality.
 
@@ -30,7 +30,7 @@ cp .env.example .env.local
 
 2. Update `.env.local` with your credentials:
 ```env
-MONGODB_URI=mongodb://localhost:27017/pirinku
+MONGODB_URI=mongodb://localhost:27017/recook
 JWT_SECRET=your-super-secret-jwt-key
 JWT_EXPIRES_IN=7d
 EMAIL_HOST=smtp.gmail.com

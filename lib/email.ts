@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 export async function sendOTPEmail(email: string, otp: string, username: string) {
   const mailOptions = {
-    from: `"Pirinku" <${process.env.EMAIL_USER}>`,
+    from: `"ReCook" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: 'Verify Your Email - OTP Code',
     html: `
@@ -23,7 +23,7 @@ export async function sendOTPEmail(email: string, otp: string, username: string)
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Verify Your Email - Pirinku</title>
+        <title>Verify Your Email - ReCook</title>
       </head>
       <body style="margin: 0; padding: 0; background-color: #EEEEEE; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #EEEEEE; padding: 40px 0;">
@@ -36,7 +36,7 @@ export async function sendOTPEmail(email: string, otp: string, username: string)
                 <tr>
                   <td style="background: linear-gradient(135deg, #8BD65E 0%, #6FB84A 100%); padding: 40px 30px; text-align: center;">
                     <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">
-                      🍽️ Pirinku
+                      🍽️ ReCook
                     </h1>
                     <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.95;">
                       Your Personalized Recipe Assistant
@@ -51,7 +51,7 @@ export async function sendOTPEmail(email: string, otp: string, username: string)
                       Welcome, ${username}! 👋
                     </h2>
                     <p style="margin: 0 0 24px 0; color: #555555; font-size: 16px; line-height: 1.6;">
-                      Thank you for joining Pirinku! To get started, please verify your email address using the OTP code below:
+                      Thank you for joining ReCook! To get started, please verify your email address using the OTP code below:
                     </p>
                     
                     <!-- OTP Box -->
@@ -86,7 +86,7 @@ export async function sendOTPEmail(email: string, otp: string, username: string)
                     </table>
                     
                     <p style="margin: 0; color: #777777; font-size: 14px; line-height: 1.6;">
-                      If you didn't create an account with Pirinku, you can safely ignore this email.
+                      If you didn't create an account with ReCook, you can safely ignore this email.
                     </p>
                   </td>
                 </tr>
@@ -98,7 +98,7 @@ export async function sendOTPEmail(email: string, otp: string, username: string)
                       This is an automated message, please do not reply to this email.
                     </p>
                     <p style="margin: 0; color: #999999; font-size: 12px;">
-                      © ${new Date().getFullYear()} Pirinku. All rights reserved.
+                      © ${new Date().getFullYear()} ReCook. All rights reserved.
                     </p>
                   </td>
                 </tr>
@@ -124,16 +124,16 @@ export async function sendOTPEmail(email: string, otp: string, username: string)
 export async function sendPasswordResetEmail(email: string, resetOtp: string, username: string) {
 
   const mailOptions = {
-    from: `"Pirinku" <${process.env.EMAIL_USER}>`,
+    from: `"ReCook" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: 'Reset Your Password - Pirinku',
+    subject: 'Reset Your Password - ReCook',
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Reset Your Password - Pirinku</title>
+        <title>Reset Your Password - ReCook</title>
       </head>
       <body style="margin: 0; padding: 0; background-color: #EEEEEE; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #EEEEEE; padding: 40px 0;">
@@ -146,7 +146,7 @@ export async function sendPasswordResetEmail(email: string, resetOtp: string, us
                 <tr>
                   <td style="background: linear-gradient(135deg, #8BD65E 0%, #6FB84A 100%); padding: 40px 30px; text-align: center;">
                     <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">
-                      🍽️ Pirinku
+                      🍽️ ReCook
                     </h1>
                     <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.95;">
                       Your Personalized Recipe Assistant
@@ -211,7 +211,7 @@ export async function sendPasswordResetEmail(email: string, resetOtp: string, us
                       This is an automated message, please do not reply to this email.
                     </p>
                     <p style="margin: 0; color: #999999; font-size: 12px;">
-                      © ${new Date().getFullYear()} Pirinku. All rights reserved.
+                      © ${new Date().getFullYear()} ReCook. All rights reserved.
                     </p>
                   </td>
                 </tr>
