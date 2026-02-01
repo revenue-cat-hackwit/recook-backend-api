@@ -4,8 +4,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mongoConnect'
 import User from '@/models/User'
 import { generateToken } from '@/lib/jwt'
+import { corsWrapper } from '@/lib/cors'
 
-export async function POST(request: NextRequest) {
+async function handler(request: NextRequest) {
   try {
     const { email, otp } = await request.json()
 

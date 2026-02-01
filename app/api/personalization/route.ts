@@ -169,6 +169,16 @@ async function handlePATCH(req: AuthenticatedRequest) {
       }
     )
 
+    if (!personalization) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Personalization not found',
+        },
+        { status: 404 }
+      )
+    }
+
     return NextResponse.json(
       {
         success: true,
