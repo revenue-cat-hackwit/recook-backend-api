@@ -1,196 +1,126 @@
 // @/app/api/chat/history/route.ts
-
 import { NextResponse } from "next/server";
-import { withAuth, AuthenticatedRequest } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
 import History from "@/models/History";
 import Title from "@/models/Title";
+import { withAuth, AuthenticatedRequest } from "@/lib/authMiddleware";
 
-// POST: Save new message to conversation history
-async function handlePost(req: AuthenticatedRequest) {
+// GET - Get all histories for a specific title OR all histories for user
+export const GET = withAuth(async (req: AuthenticatedRequest) => {
     try {
+        await connectDB();
+
         const userId = req.user?.userId;
+        const { searchParams } = new URL(req.url);
+        const titleId = searchParams.get("titleId");
 
         if (!userId) {
             return NextResponse.json(
                 { success: false, message: "User ID not found" },
-                { status: 401 },
+                { status: 400 }
             );
         }
 
-        const { titleId, role, content } = await req.json();
+        // If titleId is provided, get histories for that specific title
+        if (titleId) {
+            // Verify that the title belongs to the user
+            const title = await Title.findOne({ _id: titleId, userId });
 
-        if (!titleId || !role || !content) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    message: "titleId, role, and content are required",
-                },
-                { status: 400 },
-            );
-        }
+            if (!title) {
+                return NextResponse.json(
+                    { success: false, message: "Title not found or unauthorized" },
+                    { status: 404 }
+                );
+            }
 
-        if (!["user", "assistant", "system"].includes(role)) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    message: 'Role must be "user", "assistant", or "system"',
-                },
-                { status: 400 },
-            );
-        }
+            const histories = await History.find({ titleId }).sort({ createdAt: -1 });
 
-        await connectDB();
-
-        // Verify title exists and belongs to user
-        const title = await Title.findOne({ _id: titleId, userId });
-
-        if (!title) {
-            return NextResponse.json(
-                { success: false, message: "Conversation not found" },
-                { status: 404 },
-            );
-        }
-
-        // Find or create history for this title
-        let history = await History.findOne({ titleId });
-
-        if (!history) {
-            history = await History.create({
-                titleId,
-                messages: [{ role, content }],
+            return NextResponse.json({
+                success: true,
+                data: histories,
             });
-        } else {
-            history.messages.push({ role, content });
-            await history.save();
         }
 
-        // Update title's updatedAt timestamp
-        await Title.findByIdAndUpdate(titleId, { updatedAt: new Date() });
+        // If no titleId, get all histories for all user's titles
+        const userTitles = await Title.find({ userId }).select("_id");
+        const titleIds = userTitles.map((title) => title._id);
 
-        return NextResponse.json(
-            {
-                success: true,
-                message: "Message saved successfully",
-                data: { history },
-            },
-            { status: 201 },
-        );
+        const allHistories = await History.find({ titleId: { $in: titleIds } })
+            .sort({ createdAt: -1 })
+            .populate("titleId", "title");
+
+        return NextResponse.json({
+            success: true,
+            data: allHistories,
+        });
     } catch (error) {
-        console.error("Save message error:", error);
+        console.error("Error fetching histories:", error);
         return NextResponse.json(
-            { success: false, message: "Internal server error" },
-            { status: 500 },
+            { success: false, message: "Failed to fetch histories" },
+            { status: 500 }
         );
     }
-}
+});
 
-// GET: Get all messages from a conversation
-async function handleGet(req: AuthenticatedRequest) {
+// POST - Create new history
+export const POST = withAuth(async (req: AuthenticatedRequest) => {
     try {
+        await connectDB();
+
         const userId = req.user?.userId;
 
         if (!userId) {
             return NextResponse.json(
                 { success: false, message: "User ID not found" },
-                { status: 401 },
+                { status: 400 }
             );
         }
 
-        const { searchParams } = new URL(req.url);
-        const titleId = searchParams.get("titleId");
+        const body = await req.json();
+        const { titleId, messages } = body;
 
         if (!titleId) {
             return NextResponse.json(
                 { success: false, message: "Title ID is required" },
-                { status: 400 },
+                { status: 400 }
             );
         }
 
-        await connectDB();
+        if (!messages || !Array.isArray(messages) || messages.length === 0) {
+            return NextResponse.json(
+                { success: false, message: "Messages array is required" },
+                { status: 400 }
+            );
+        }
 
-        // Verify title exists and belongs to user
+        // Verify that the title belongs to the user
         const title = await Title.findOne({ _id: titleId, userId });
 
         if (!title) {
             return NextResponse.json(
-                { success: false, message: "Conversation not found" },
-                { status: 404 },
+                { success: false, message: "Title not found or unauthorized" },
+                { status: 404 }
             );
         }
 
-        const history = await History.findOne({ titleId }).lean();
+        const newHistory = await History.create({
+            titleId,
+            messages,
+        });
 
         return NextResponse.json(
             {
                 success: true,
-                data: {
-                    messages: history?.messages || [],
-                },
+                data: newHistory,
+                message: "History created successfully",
             },
-            { status: 200 },
+            { status: 201 }
         );
     } catch (error) {
-        console.error("Get history error:", error);
+        console.error("Error creating history:", error);
         return NextResponse.json(
-            { success: false, message: "Internal server error" },
-            { status: 500 },
+            { success: false, message: "Failed to create history" },
+            { status: 500 }
         );
     }
-}
-
-// DELETE: Delete all history for a conversation
-async function handleDelete(req: AuthenticatedRequest) {
-    try {
-        const userId = req.user?.userId;
-
-        if (!userId) {
-            return NextResponse.json(
-                { success: false, message: "User ID not found" },
-                { status: 401 },
-            );
-        }
-
-        const { searchParams } = new URL(req.url);
-        const titleId = searchParams.get("titleId");
-
-        if (!titleId) {
-            return NextResponse.json(
-                { success: false, message: "Title ID is required" },
-                { status: 400 },
-            );
-        }
-
-        await connectDB();
-
-        // Verify title exists and belongs to user
-        const title = await Title.findOne({ _id: titleId, userId });
-
-        if (!title) {
-            return NextResponse.json(
-                { success: false, message: "Conversation not found" },
-                { status: 404 },
-            );
-        }
-
-        await History.deleteMany({ titleId });
-
-        return NextResponse.json(
-            {
-                success: true,
-                message: "History deleted successfully",
-            },
-            { status: 200 },
-        );
-    } catch (error) {
-        console.error("Delete history error:", error);
-        return NextResponse.json(
-            { success: false, message: "Internal server error" },
-            { status: 500 },
-        );
-    }
-}
-
-export const POST = withAuth(handlePost);
-export const GET = withAuth(handleGet);
-export const DELETE = withAuth(handleDelete);
+});

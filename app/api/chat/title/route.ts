@@ -1,146 +1,80 @@
 // @/app/api/chat/title/route.ts
-
 import { NextResponse } from "next/server";
-import { withAuth, AuthenticatedRequest } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
 import Title from "@/models/Title";
-import History from "@/models/History";
+import { withAuth, AuthenticatedRequest } from "@/lib/authMiddleware";
 
-// POST: Create new conversation title
-async function handlePost(req: AuthenticatedRequest) {
+// GET - Get all titles for authenticated user
+export const GET = withAuth(async (req: AuthenticatedRequest) => {
     try {
+        await connectDB();
+
         const userId = req.user?.userId;
 
         if (!userId) {
             return NextResponse.json(
                 { success: false, message: "User ID not found" },
-                { status: 401 },
+                { status: 400 }
             );
         }
 
-        const { title } = await req.json();
+        const titles = await Title.find({ userId }).sort({ createdAt: -1 });
 
-        if (!title || title.trim() === "") {
+        return NextResponse.json({
+            success: true,
+            data: titles,
+        });
+    } catch (error) {
+        console.error("Error fetching titles:", error);
+        return NextResponse.json(
+            { success: false, message: "Failed to fetch titles" },
+            { status: 500 }
+        );
+    }
+});
+
+// POST - Create new title
+export const POST = withAuth(async (req: AuthenticatedRequest) => {
+    try {
+        await connectDB();
+
+        const userId = req.user?.userId;
+
+        if (!userId) {
+            return NextResponse.json(
+                { success: false, message: "User ID not found" },
+                { status: 400 }
+            );
+        }
+
+        const body = await req.json();
+        const { title } = body;
+
+        if (!title) {
             return NextResponse.json(
                 { success: false, message: "Title is required" },
-                { status: 400 },
+                { status: 400 }
             );
         }
-
-        await connectDB();
 
         const newTitle = await Title.create({
             userId,
-            title: title.trim(),
+            title,
         });
 
         return NextResponse.json(
             {
                 success: true,
-                message: "Conversation created successfully",
-                data: { title: newTitle },
+                data: newTitle,
+                message: "Title created successfully",
             },
-            { status: 201 },
+            { status: 201 }
         );
     } catch (error) {
-        console.error("Create title error:", error);
+        console.error("Error creating title:", error);
         return NextResponse.json(
-            { success: false, message: "Internal server error" },
-            { status: 500 },
+            { success: false, message: "Failed to create title" },
+            { status: 500 }
         );
     }
-}
-
-// GET: Get all conversation titles for user
-async function handleGet(req: AuthenticatedRequest) {
-    try {
-        const userId = req.user?.userId;
-
-        if (!userId) {
-            return NextResponse.json(
-                { success: false, message: "User ID not found" },
-                { status: 401 },
-            );
-        }
-
-        await connectDB();
-
-        const titles = await Title.find({ userId })
-            .sort({ updatedAt: -1 })
-            .lean();
-
-        return NextResponse.json(
-            {
-                success: true,
-                data: { titles },
-            },
-            { status: 200 },
-        );
-    } catch (error) {
-        console.error("Get titles error:", error);
-        return NextResponse.json(
-            { success: false, message: "Internal server error" },
-            { status: 500 },
-        );
-    }
-}
-
-// DELETE: Delete conversation and its history
-async function handleDelete(req: AuthenticatedRequest) {
-    try {
-        const userId = req.user?.userId;
-
-        if (!userId) {
-            return NextResponse.json(
-                { success: false, message: "User ID not found" },
-                { status: 401 },
-            );
-        }
-
-        const { searchParams } = new URL(req.url);
-        const titleId = searchParams.get("titleId");
-
-        if (!titleId) {
-            return NextResponse.json(
-                { success: false, message: "Title ID is required" },
-                { status: 400 },
-            );
-        }
-
-        await connectDB();
-
-        // Check if title exists and belongs to user
-        const title = await Title.findOne({ _id: titleId, userId });
-
-        if (!title) {
-            return NextResponse.json(
-                { success: false, message: "Conversation not found" },
-                { status: 404 },
-            );
-        }
-
-        // Delete all history associated with this title
-        await History.deleteMany({ titleId });
-
-        // Delete the title
-        await Title.findByIdAndDelete(titleId);
-
-        return NextResponse.json(
-            {
-                success: true,
-                message: "Conversation deleted successfully",
-            },
-            { status: 200 },
-        );
-    } catch (error) {
-        console.error("Delete title error:", error);
-        return NextResponse.json(
-            { success: false, message: "Internal server error" },
-            { status: 500 },
-        );
-    }
-}
-
-export const POST = withAuth(handlePost);
-export const GET = withAuth(handleGet);
-export const DELETE = withAuth(handleDelete);
+});
