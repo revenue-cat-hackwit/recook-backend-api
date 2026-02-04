@@ -1,5 +1,4 @@
 // @/lib/jwt.ts
-
 import jwt, { SignOptions } from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'

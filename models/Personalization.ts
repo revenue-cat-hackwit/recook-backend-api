@@ -1,5 +1,4 @@
 // @/models/Personalization.ts
-
 import mongoose, { Schema, model, models, Model, Document, Types } from 'mongoose'
 
 export interface IPersonalization extends Document {

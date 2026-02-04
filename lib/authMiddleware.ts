@@ -1,5 +1,4 @@
 // @/lib/authMiddleware.ts
-
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken, JWTPayload } from './jwt'
 import { withCors } from './cors'
@@ -16,7 +15,7 @@ export function withAuth(
       try {
         // Get token from Authorization header
         const authHeader = req.headers.get('authorization')
-        
+
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
           return NextResponse.json(
             { success: false, message: 'Unauthorized - No token provided' },
@@ -28,7 +27,7 @@ export function withAuth(
 
         // Verify token
         const decoded = verifyToken(token)
-        
+
         if (!decoded) {
           return NextResponse.json(
             { success: false, message: 'Unauthorized - Invalid token' },

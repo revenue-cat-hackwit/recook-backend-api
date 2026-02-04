@@ -1,3 +1,4 @@
+// @/models/Recipe.ts
 import mongoose, { Document, Model, Schema } from "mongoose";
 
 /**

@@ -1,3 +1,4 @@
+// @/models/FoodIngredient.ts
 import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IFoodIngredient {

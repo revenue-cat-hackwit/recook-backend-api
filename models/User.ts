@@ -12,10 +12,20 @@ export interface IUser extends Document {
 	following: Types.ObjectId[]
 	followers: Types.ObjectId[]
 	savedPosts: Types.ObjectId[]
+
+	// OTP
 	otp?: string
 	otpExpiry?: Date
+
+	// Reset password
 	resetPasswordOtp?: string
 	resetPasswordOtpExpiry?: Date
+
+	// Subscription
+	isSubscribed?: boolean
+	subscriptionType?: string
+	subscriptionExpiry?: Date
+
 	createdAt?: Date
 	updatedAt?: Date
 }
@@ -29,13 +39,23 @@ const UserSchema = new Schema<IUser>(
 		avatar: { type: String },
 		bio: { type: String, trim: true, maxlength: 300 },
 		isVerified: { type: Boolean, default: false },
+
 		following: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
 		followers: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
 		savedPosts: [{ type: Schema.Types.ObjectId, ref: 'Post', default: [] }],
+
+		// OTP
 		otp: { type: String },
 		otpExpiry: { type: Date },
+
+		// Reset password
 		resetPasswordOtp: { type: String },
 		resetPasswordOtpExpiry: { type: Date },
+
+		// Subscription
+		isSubscribed: { type: Boolean, default: false },
+		subscriptionType: { type: String },
+		subscriptionExpiry: { type: Date },
 	},
 	{ timestamps: true }
 )
@@ -43,4 +63,4 @@ const UserSchema = new Schema<IUser>(
 const User: Model<IUser> =
 	(models.User as Model<IUser>) || model<IUser>('User', UserSchema)
 
-export default User
+export default User;

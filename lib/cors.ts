@@ -1,5 +1,4 @@
 // @/lib/cors.ts
-
 import { NextRequest, NextResponse } from 'next/server'
 
 // CORS wrapper for API routes
