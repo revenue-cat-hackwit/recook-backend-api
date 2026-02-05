@@ -8,9 +8,12 @@ export interface AuthenticatedRequest extends NextRequest {
 }
 
 export function withAuth(
-  handler: (req: AuthenticatedRequest, context?: any) => Promise<NextResponse>,
+  handler: (
+    req: AuthenticatedRequest,
+    context?: unknown,
+  ) => Promise<NextResponse>,
 ) {
-  return async (req: AuthenticatedRequest, context?: any) => {
+  return async (req: AuthenticatedRequest, context?: unknown) => {
     return withCors(req, async () => {
       try {
         // Get token from Authorization header

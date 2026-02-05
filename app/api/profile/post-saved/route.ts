@@ -41,7 +41,23 @@ async function handleGet(req: AuthenticatedRequest) {
     }
 
     // Format the saved posts
-    const savedPosts = (user.savedPosts as any[]).map((post) => ({
+    const savedPosts = (
+      user.savedPosts as unknown as Array<{
+        _id: string;
+        content: string;
+        imageUrl?: string;
+        userId: {
+          _id: string;
+          username: string;
+          fullName: string;
+          avatar?: string;
+        };
+        likes: Array<unknown>;
+        comments: Array<unknown>;
+        createdAt: Date;
+        updatedAt: Date;
+      }>
+    ).map((post) => ({
       id: post._id,
       content: post.content,
       imageUrl: post.imageUrl,
@@ -54,7 +70,7 @@ async function handleGet(req: AuthenticatedRequest) {
       likesCount: post.likes.length,
       commentsCount: post.comments.length,
       isLiked: post.likes.some(
-        (likeId: any) => likeId.toString() === userId.toString(),
+        (likeId) => likeId?.toString() === userId.toString(),
       ),
       isSaved: true, // All posts here are saved
       createdAt: post.createdAt,

@@ -36,11 +36,16 @@ async function handleGet(req: AuthenticatedRequest) {
 
     // Extract only the user's comments from each post
     const myComments = posts.flatMap((post) => {
+      const populatedUser = post.userId as unknown as {
+        _id: string;
+        username: string;
+        fullName: string;
+        avatar?: string;
+      };
+
       return post.comments
-        .filter(
-          (comment: any) => comment.userId.toString() === userId.toString(),
-        )
-        .map((comment: any) => ({
+        .filter((comment) => comment.userId.toString() === userId.toString())
+        .map((comment) => ({
           id: comment._id,
           content: comment.content,
           createdAt: comment.createdAt,
@@ -49,10 +54,10 @@ async function handleGet(req: AuthenticatedRequest) {
             content: post.content,
             imageUrl: post.imageUrl,
             user: {
-              id: (post.userId as any)._id,
-              username: (post.userId as any).username,
-              fullName: (post.userId as any).fullName,
-              avatar: (post.userId as any).avatar,
+              id: populatedUser._id,
+              username: populatedUser.username,
+              fullName: populatedUser.fullName,
+              avatar: populatedUser.avatar,
             },
             likesCount: post.likes.length,
             commentsCount: post.comments.length,

@@ -10,11 +10,11 @@ import Title from "@/models/Title";
 
 // Initialize AI clients
 const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY!,
+  apiKey: process.env.GROQ_API_KEY || "",
 });
 
 const gemini = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY!,
+  apiKey: process.env.GEMINI_API_KEY || "",
 });
 
 // Helper function to generate title from first message

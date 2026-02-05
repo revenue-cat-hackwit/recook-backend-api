@@ -1,11 +1,12 @@
-// @/app/api/rag/user-personalization/route.ts
 import { NextResponse } from "next/server";
 import { type AuthenticatedRequest, withAuth } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
-import Personalization from "@/models/Personalization";
+import Personalization, {
+  type IPersonalization,
+} from "@/models/Personalization";
 
 // Helper function to generate context paragraph from personalization data
-function generateContextParagraph(personalization: any): string {
+function generateContextParagraph(personalization: IPersonalization): string {
   const parts: string[] = [];
 
   // Favorite Cuisines

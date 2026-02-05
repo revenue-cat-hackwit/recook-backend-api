@@ -1,5 +1,4 @@
-// @/app/api/posts/[id]/comment/route.ts
-
+import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 import { type AuthenticatedRequest, withAuth } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
@@ -37,7 +36,7 @@ async function handlePost(
     }
 
     const comment = {
-      userId: userId as any,
+      userId: new Types.ObjectId(userId),
       content,
       createdAt: new Date(),
     };

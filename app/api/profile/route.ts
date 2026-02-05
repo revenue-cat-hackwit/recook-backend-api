@@ -61,7 +61,7 @@ async function handlePatch(req: AuthenticatedRequest) {
     const { fullName, avatar, bio } = await req.json();
 
     // Build update object with only provided fields
-    const updateFields: any = {};
+    const updateFields: Record<string, string | undefined> = {};
     if (fullName !== undefined) updateFields.fullName = fullName;
     if (avatar !== undefined) updateFields.avatar = avatar;
     if (bio !== undefined) updateFields.bio = bio;

@@ -1,5 +1,4 @@
-// @/app/api/users/[id]/follow/route.ts
-
+import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 import { type AuthenticatedRequest, withAuth } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
@@ -72,8 +71,8 @@ async function handlePost(
     }
 
     // Follow
-    currentUser.following.push(targetUserId as any);
-    targetUser.followers.push(currentUserId as any);
+    currentUser.following.push(new Types.ObjectId(targetUserId));
+    targetUser.followers.push(new Types.ObjectId(currentUserId));
 
     await currentUser.save();
     await targetUser.save();

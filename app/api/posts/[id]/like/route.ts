@@ -1,5 +1,4 @@
-// @/app/api/posts/[id]/like/route.ts
-
+import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 import { type AuthenticatedRequest, withAuth } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
@@ -27,7 +26,7 @@ async function handlePost(
 
     // Check if user already liked
     const likeIndex = post.likes.findIndex(
-      (like: any) => like.toString() === userId,
+      (like) => like.toString() === userId,
     );
 
     if (likeIndex > -1) {
@@ -46,7 +45,7 @@ async function handlePost(
     }
 
     // Like
-    post.likes.push(userId as any);
+    post.likes.push(new Types.ObjectId(userId));
     await post.save();
 
     return NextResponse.json(

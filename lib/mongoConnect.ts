@@ -1,5 +1,5 @@
 // @/lib/mongoConnect.ts
-import type mongoose from "mongoose";
+import type mongooseType from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
@@ -10,8 +10,8 @@ if (!MONGODB_URI) {
 }
 
 interface MongooseCache {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
+  conn: typeof mongooseType | null;
+  promise: Promise<typeof mongooseType> | null;
 }
 
 declare global {

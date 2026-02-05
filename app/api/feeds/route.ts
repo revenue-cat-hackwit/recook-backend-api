@@ -53,24 +53,33 @@ async function handleGet(req: AuthenticatedRequest) {
     const totalPages = Math.ceil(totalPosts / limit);
 
     // Format the response
-    const formattedPosts = posts.map((post) => ({
-      id: post._id,
-      content: post.content,
-      imageUrl: post.imageUrl || null,
-      user: {
-        id: (post.userId as any)._id,
-        avatar: (post.userId as any).avatar || null,
-        fullName: (post.userId as any).fullName,
-        username: (post.userId as any).username,
-      },
-      likesCount: post.likes.length,
-      commentsCount: post.comments.length,
-      isLiked: post.likes.some(
-        (likeId: any) => likeId.toString() === userId.toString(),
-      ),
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-    }));
+    const formattedPosts = posts.map((post) => {
+      const populatedUser = post.userId as unknown as {
+        _id: string;
+        avatar?: string;
+        fullName: string;
+        username: string;
+      };
+
+      return {
+        id: post._id,
+        content: post.content,
+        imageUrl: post.imageUrl || null,
+        user: {
+          id: populatedUser._id,
+          avatar: populatedUser.avatar || null,
+          fullName: populatedUser.fullName,
+          username: populatedUser.username,
+        },
+        likesCount: post.likes.length,
+        commentsCount: post.comments.length,
+        isLiked: post.likes.some(
+          (likeId) => likeId.toString() === userId.toString(),
+        ),
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+      };
+    });
 
     return NextResponse.json(
       {

@@ -161,7 +161,7 @@ async function handlePATCH(req: AuthenticatedRequest) {
     }
 
     // Build update object with only provided fields
-    const updateFields: any = {};
+    const updateFields: Record<string, string[] | undefined> = {};
     if (favoriteCuisines !== undefined)
       updateFields.favoriteCuisines = favoriteCuisines;
     if (tastePreferences !== undefined)
