@@ -25,9 +25,10 @@ const HomePage = () => {
                   Welcome to ReCook API
                 </h2>
                 <p className="text-gray-600 text-base font-normal leading-relaxed">
-                  This is the backend API service powering the ReCook application. 
-                  Access comprehensive endpoints for authentication, user management, 
-                  and personalized recipe recommendations.
+                  This is the backend API service powering the ReCook
+                  application. Access comprehensive endpoints for
+                  authentication, user management, and personalized recipe
+                  recommendations.
                 </p>
               </div>
 
@@ -59,7 +60,8 @@ const HomePage = () => {
                     Personalization
                   </h3>
                   <p className="text-gray-500 text-sm font-normal">
-                    Custom preferences for cuisines, allergies, and kitchen tools
+                    Custom preferences for cuisines, allergies, and kitchen
+                    tools
                   </p>
                 </div>
 
@@ -77,24 +79,39 @@ const HomePage = () => {
               {/* API Info Box */}
               <div className="bg-gradient-to-br from-yellow-50 to-amber-50 border-l-4 border-[#8BD65E] rounded-lg p-5 mt-6">
                 <p className="text-gray-700 text-sm font-normal leading-relaxed">
-                  <span className="text-base">📚</span> API Documentation available at{' '}
-                  <span className="text-[#6FB84A] font-normal">/docs/AUTH_README.md</span>
+                  <span className="text-base">📚</span> API Documentation
+                  available at{" "}
+                  <span className="text-[#6FB84A] font-normal">
+                    /docs/AUTH_README.md
+                  </span>
                 </p>
               </div>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-4 pt-4">
                 <div className="text-center">
-                  <div className="text-[#8BD65E] text-3xl font-normal mb-1">15+</div>
-                  <div className="text-gray-500 text-xs font-normal">Endpoints</div>
+                  <div className="text-[#8BD65E] text-3xl font-normal mb-1">
+                    15+
+                  </div>
+                  <div className="text-gray-500 text-xs font-normal">
+                    Endpoints
+                  </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-[#8BD65E] text-3xl font-normal mb-1">JWT</div>
-                  <div className="text-gray-500 text-xs font-normal">Security</div>
+                  <div className="text-[#8BD65E] text-3xl font-normal mb-1">
+                    JWT
+                  </div>
+                  <div className="text-gray-500 text-xs font-normal">
+                    Security
+                  </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-[#8BD65E] text-3xl font-normal mb-1">REST</div>
-                  <div className="text-gray-500 text-xs font-normal">Architecture</div>
+                  <div className="text-[#8BD65E] text-3xl font-normal mb-1">
+                    REST
+                  </div>
+                  <div className="text-gray-500 text-xs font-normal">
+                    Architecture
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,7 +120,8 @@ const HomePage = () => {
           {/* Footer */}
           <div className="bg-gray-50 px-8 py-6 text-center border-t border-gray-100">
             <p className="text-gray-400 text-xs font-normal">
-              This is an automated API service. For support, contact the development team.
+              This is an automated API service. For support, contact the
+              development team.
             </p>
             <p className="text-gray-400 text-xs font-normal mt-2">
               © {new Date().getFullYear()} ReCook. All rights reserved.
@@ -112,7 +130,7 @@ const HomePage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default HomePage;

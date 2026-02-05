@@ -1,21 +1,25 @@
 // @/lib/email.ts
-import nodemailer from 'nodemailer'
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+  host: process.env.EMAIL_HOST || "smtp.gmail.com",
   port: Number(process.env.EMAIL_PORT) || 587,
   secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD,
   },
-})
+});
 
-export async function sendOTPEmail(email: string, otp: string, username: string) {
+export async function sendOTPEmail(
+  email: string,
+  otp: string,
+  username: string,
+) {
   const mailOptions = {
     from: `"ReCook" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: 'Verify Your Email - OTP Code',
+    subject: "Verify Your Email - OTP Code",
     html: `
       <!DOCTYPE html>
       <html>
@@ -109,23 +113,26 @@ export async function sendOTPEmail(email: string, otp: string, username: string)
       </body>
       </html>
     `,
-  }
+  };
 
   try {
-    await transporter.sendMail(mailOptions)
-    console.log(`✅ OTP email sent to ${email}`)
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ OTP email sent to ${email}`);
   } catch (error) {
-    console.error('❌ Error sending OTP email:', error)
-    throw new Error('Failed to send OTP email')
+    console.error("❌ Error sending OTP email:", error);
+    throw new Error("Failed to send OTP email");
   }
 }
 
-export async function sendPasswordResetEmail(email: string, resetOtp: string, username: string) {
-
+export async function sendPasswordResetEmail(
+  email: string,
+  resetOtp: string,
+  username: string,
+) {
   const mailOptions = {
     from: `"ReCook" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: 'Reset Your Password - ReCook',
+    subject: "Reset Your Password - ReCook",
     html: `
       <!DOCTYPE html>
       <html>
@@ -222,13 +229,13 @@ export async function sendPasswordResetEmail(email: string, resetOtp: string, us
       </body>
       </html>
     `,
-  }
+  };
 
   try {
-    await transporter.sendMail(mailOptions)
-    console.log(`✅ Password reset email sent to ${email}`)
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ Password reset email sent to ${email}`);
   } catch (error) {
-    console.error('❌ Error sending password reset email:', error)
-    throw new Error('Failed to send password reset email')
+    console.error("❌ Error sending password reset email:", error);
+    throw new Error("Failed to send password reset email");
   }
 }

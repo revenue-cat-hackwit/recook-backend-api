@@ -1,0 +1,275 @@
+app/api/chat/ask-and-save/route.ts:13:11 lint/style/noNonNullAssertion ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+  
+    11 │ // Initialize AI clients
+    12 │ const groq = new Groq({
+  > 13 │   apiKey: process.env.GROQ_API_KEY!,
+       │           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    14 │ });
+    15 │ 
+  
+
+app/api/chat/ask-and-save/route.ts:17:11 lint/style/noNonNullAssertion ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+  
+    16 │ const gemini = new GoogleGenAI({
+  > 17 │   apiKey: process.env.GEMINI_API_KEY!,
+       │           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    18 │ });
+    19 │ 
+  
+
+app/api/chat/gemini/route.ts:6:11 lint/style/noNonNullAssertion ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+  
+    5 │ const ai = new GoogleGenAI({
+  > 6 │   apiKey: process.env.GEMINI_API_KEY!,
+      │           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    7 │ });
+    8 │ 
+  
+
+app/api/chat/groq/route.ts:5:11 lint/style/noNonNullAssertion ━━━━━━━━━━
+
+  ! Forbidden non-null assertion.
+  
+    4 │ const groq = new Groq({
+  > 5 │   apiKey: process.env.GROQ_API_KEY!,
+      │           ^^^^^^^^^^^^^^^^^^^^^^^^^
+    6 │ });
+    7 │ 
+  
+
+app/api/feeds/route.ts:61:29 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    59 │       imageUrl: post.imageUrl || null,
+    60 │       user: {
+  > 61 │         id: (post.userId as any)._id,
+       │                             ^^^
+    62 │         avatar: (post.userId as any).avatar || null,
+    63 │         fullName: (post.userId as any).fullName,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/feeds/route.ts:62:33 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    60 │       user: {
+    61 │         id: (post.userId as any)._id,
+  > 62 │         avatar: (post.userId as any).avatar || null,
+       │                                 ^^^
+    63 │         fullName: (post.userId as any).fullName,
+    64 │         username: (post.userId as any).username,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/feeds/route.ts:63:35 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    61 │         id: (post.userId as any)._id,
+    62 │         avatar: (post.userId as any).avatar || null,
+  > 63 │         fullName: (post.userId as any).fullName,
+       │                                   ^^^
+    64 │         username: (post.userId as any).username,
+    65 │       },
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/feeds/route.ts:64:35 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    62 │         avatar: (post.userId as any).avatar || null,
+    63 │         fullName: (post.userId as any).fullName,
+  > 64 │         username: (post.userId as any).username,
+       │                                   ^^^
+    65 │       },
+    66 │       likesCount: post.likes.length,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/feeds/route.ts:69:18 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    67 │       commentsCount: post.comments.length,
+    68 │       isLiked: post.likes.some(
+  > 69 │         (likeId: any) => likeId.toString() === userId.toString(),
+       │                  ^^^
+    70 │       ),
+    71 │       createdAt: post.createdAt,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/personalization/route.ts:164:25 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    163 │     // Build update object with only provided fields
+  > 164 │     const updateFields: any = {};
+        │                         ^^^
+    165 │     if (favoriteCuisines !== undefined)
+    166 │       updateFields.favoriteCuisines = favoriteCuisines;
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/posts/[id]/comment/route.ts:40:25 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    39 │     const comment = {
+  > 40 │       userId: userId as any,
+       │                         ^^^
+    41 │       content,
+    42 │       createdAt: new Date(),
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/posts/[id]/like/route.ts:30:14 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    28 │     // Check if user already liked
+    29 │     const likeIndex = post.likes.findIndex(
+  > 30 │       (like: any) => like.toString() === userId,
+       │              ^^^
+    31 │     );
+    32 │ 
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/posts/[id]/like/route.ts:49:31 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    48 │     // Like
+  > 49 │     post.likes.push(userId as any);
+       │                               ^^^
+    50 │     await post.save();
+    51 │ 
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/profile/my-comment/route.ts:41:21 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    39 │       return post.comments
+    40 │         .filter(
+  > 41 │           (comment: any) => comment.userId.toString() === userId.toString(),
+       │                     ^^^
+    42 │         )
+    43 │         .map((comment: any) => ({
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/profile/my-comment/route.ts:43:24 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    41 │           (comment: any) => comment.userId.toString() === userId.toString(),
+    42 │         )
+  > 43 │         .map((comment: any) => ({
+       │                        ^^^
+    44 │           id: comment._id,
+    45 │           content: comment.content,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/profile/my-comment/route.ts:52:35 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    50 │             imageUrl: post.imageUrl,
+    51 │             user: {
+  > 52 │               id: (post.userId as any)._id,
+       │                                   ^^^
+    53 │               username: (post.userId as any).username,
+    54 │               fullName: (post.userId as any).fullName,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/profile/my-comment/route.ts:53:41 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    51 │             user: {
+    52 │               id: (post.userId as any)._id,
+  > 53 │               username: (post.userId as any).username,
+       │                                         ^^^
+    54 │               fullName: (post.userId as any).fullName,
+    55 │               avatar: (post.userId as any).avatar,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/profile/my-comment/route.ts:54:41 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    52 │               id: (post.userId as any)._id,
+    53 │               username: (post.userId as any).username,
+  > 54 │               fullName: (post.userId as any).fullName,
+       │                                         ^^^
+    55 │               avatar: (post.userId as any).avatar,
+    56 │             },
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/profile/my-comment/route.ts:55:39 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    53 │               username: (post.userId as any).username,
+    54 │               fullName: (post.userId as any).fullName,
+  > 55 │               avatar: (post.userId as any).avatar,
+       │                                       ^^^
+    56 │             },
+    57 │             likesCount: post.likes.length,
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+app/api/profile/route.ts:64:25 lint/suspicious/noExplicitAny ━━━━━━━━━━
+
+  ! Unexpected any. Specify a different type.
+  
+    63 │     // Build update object with only provided fields
+  > 64 │     const updateFields: any = {};
+       │                         ^^^
+    65 │     if (fullName !== undefined) updateFields.fullName = fullName;
+    66 │     if (avatar !== undefined) updateFields.avatar = avatar;
+  
+  i any disables many type checking rules. Its use should be avoided.
+  
+
+The number of diagnostics exceeds the limit allowed. Use --max-diagnostics to increase it.
+Diagnostics not shown: 8.
+Checked 55 files in 33ms. Fixed 13 files.
+Found 1 error.
+Found 27 warnings.
+check ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some errors were emitted while running checks.
+  
+
