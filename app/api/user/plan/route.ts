@@ -5,7 +5,7 @@ import connectDB from "@/lib/mongoConnect";
 import User from "@/models/User";
 
 // GET - Get user plan/subscription info
-export const GET = withAuth(async (req: AuthenticatedRequest) => {
+export const GET = withAuth(async (req: AuthenticatedRequest, context) => {
   try {
     await connectDB();
 

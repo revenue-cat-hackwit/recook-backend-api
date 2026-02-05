@@ -26,7 +26,7 @@ async function handlePost(
 
     // Check if user already liked
     const likeIndex = post.likes.findIndex(
-      (like) => like.toString() === userId,
+      (like: Types.ObjectId) => like.toString() === userId,
     );
 
     if (likeIndex > -1) {

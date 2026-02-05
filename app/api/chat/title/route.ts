@@ -5,7 +5,7 @@ import connectDB from "@/lib/mongoConnect";
 import Title from "@/models/Title";
 
 // GET - Get all titles for authenticated user
-export const GET = withAuth(async (req: AuthenticatedRequest) => {
+export const GET = withAuth(async (req: AuthenticatedRequest, context) => {
   try {
     await connectDB();
 
@@ -34,7 +34,7 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
 });
 
 // POST - Create new title
-export const POST = withAuth(async (req: AuthenticatedRequest) => {
+export const POST = withAuth(async (req: AuthenticatedRequest, context) => {
   try {
     await connectDB();
 

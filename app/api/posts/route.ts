@@ -7,7 +7,7 @@ import Post from "@/models/Post";
 import User from "@/models/User";
 
 // Create new post
-async function handlePost(req: AuthenticatedRequest) {
+async function handlePost(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
     const { content, imageUrl } = await req.json();

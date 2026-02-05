@@ -5,7 +5,7 @@ import connectDB from "@/lib/mongoConnect";
 import User from "@/models/User";
 
 // PATCH - Cancel user subscription
-export const PATCH = withAuth(async (req: AuthenticatedRequest) => {
+export const PATCH = withAuth(async (req: AuthenticatedRequest, context) => {
   try {
     await connectDB();
 

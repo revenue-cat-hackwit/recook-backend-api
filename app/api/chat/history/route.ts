@@ -6,7 +6,7 @@ import History from "@/models/History";
 import Title from "@/models/Title";
 
 // GET - Get all histories for a specific title OR all histories for user
-export const GET = withAuth(async (req: AuthenticatedRequest) => {
+export const GET = withAuth(async (req: AuthenticatedRequest, context) => {
   try {
     await connectDB();
 
@@ -63,7 +63,7 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
 });
 
 // POST - Create new history
-export const POST = withAuth(async (req: AuthenticatedRequest) => {
+export const POST = withAuth(async (req: AuthenticatedRequest, context) => {
   try {
     await connectDB();
 

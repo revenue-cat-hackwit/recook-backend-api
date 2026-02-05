@@ -6,7 +6,7 @@ import connectDB from "@/lib/mongoConnect";
 import Post from "@/models/Post";
 import User from "@/models/User";
 
-async function handler(req: AuthenticatedRequest) {
+async function handler(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     await connectDB();
 

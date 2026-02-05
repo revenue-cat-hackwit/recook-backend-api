@@ -4,7 +4,7 @@ import { type AuthenticatedRequest, withAuth } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
 import Personalization from "@/models/Personalization";
 
-async function handleGet(req: AuthenticatedRequest) {
+async function handleGet(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
 

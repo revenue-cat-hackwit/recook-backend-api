@@ -11,7 +11,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-async function handlePost(req: AuthenticatedRequest) {
+async function handlePost(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;

@@ -1,4 +1,5 @@
 // @/app/api/feeds/route.ts
+import { Types } from "mongoose";
 import { type NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
@@ -11,7 +12,7 @@ interface AuthenticatedRequest extends NextRequest {
   };
 }
 
-async function handleGet(req: AuthenticatedRequest) {
+async function handleGet(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
 
@@ -74,7 +75,7 @@ async function handleGet(req: AuthenticatedRequest) {
         likesCount: post.likes.length,
         commentsCount: post.comments.length,
         isLiked: post.likes.some(
-          (likeId) => likeId.toString() === userId.toString(),
+          (likeId: Types.ObjectId) => likeId.toString() === userId.toString(),
         ),
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,

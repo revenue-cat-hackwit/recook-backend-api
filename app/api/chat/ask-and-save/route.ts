@@ -76,7 +76,7 @@ async function getAIResponse(
 }
 
 // POST - Ask AI and save conversation
-export const POST = withAuth(async (req: AuthenticatedRequest) => {
+export const POST = withAuth(async (req: AuthenticatedRequest, context) => {
   try {
     await connectDB();
 

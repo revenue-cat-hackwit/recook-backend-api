@@ -2,7 +2,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
-import Post from "@/models/Post";
+import Post, { type IComment } from "@/models/Post";
 import User from "@/models/User";
 
 interface AuthenticatedRequest extends NextRequest {
@@ -11,7 +11,7 @@ interface AuthenticatedRequest extends NextRequest {
   };
 }
 
-async function handleGet(req: AuthenticatedRequest) {
+async function handleGet(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
 
@@ -44,8 +44,8 @@ async function handleGet(req: AuthenticatedRequest) {
       };
 
       return post.comments
-        .filter((comment) => comment.userId.toString() === userId.toString())
-        .map((comment) => ({
+        .filter((comment: IComment) => comment.userId.toString() === userId.toString())
+        .map((comment: IComment) => ({
           id: comment._id,
           content: comment.content,
           createdAt: comment.createdAt,

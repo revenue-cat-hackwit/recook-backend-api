@@ -10,35 +10,35 @@ function generateContextParagraph(personalization: IPersonalization): string {
   const parts: string[] = [];
 
   // Favorite Cuisines
-  if (personalization.favoriteCuisines?.length > 0) {
+  if (personalization.favoriteCuisines && personalization.favoriteCuisines.length > 0) {
     parts.push(
       `User menyukai masakan ${personalization.favoriteCuisines.join(", ")}.`,
     );
   }
 
   // Taste Preferences
-  if (personalization.tastePreferences?.length > 0) {
+  if (personalization.tastePreferences && personalization.tastePreferences.length > 0) {
     parts.push(
       `Preferensi rasa yang disukai adalah ${personalization.tastePreferences.join(", ")}.`,
     );
   }
 
   // Food Allergies
-  if (personalization.foodAllergies?.length > 0) {
+  if (personalization.foodAllergies && personalization.foodAllergies.length > 0) {
     parts.push(
       `User memiliki alergi terhadap ${personalization.foodAllergies.join(", ")}.`,
     );
   }
 
   // What's in Your Kitchen
-  if (personalization.whatsInYourKitchen?.length > 0) {
+  if (personalization.whatsInYourKitchen && personalization.whatsInYourKitchen.length > 0) {
     parts.push(
       `Bahan-bahan yang tersedia di dapur: ${personalization.whatsInYourKitchen.join(", ")}.`,
     );
   }
 
   // Other Tools
-  if (personalization.otherTools?.length > 0) {
+  if (personalization.otherTools && personalization.otherTools.length > 0) {
     parts.push(
       `Peralatan dapur yang dimiliki: ${personalization.otherTools.join(", ")}.`,
     );
@@ -53,7 +53,7 @@ function generateContextParagraph(personalization: IPersonalization): string {
 }
 
 // Get user personalization data for RAG
-async function handleGet(req: AuthenticatedRequest) {
+async function handleGet(req: AuthenticatedRequest, _context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
 

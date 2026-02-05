@@ -10,7 +10,7 @@ interface AuthenticatedRequest extends NextRequest {
   };
 }
 
-async function handleGet(req: AuthenticatedRequest) {
+async function handleGet(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
 

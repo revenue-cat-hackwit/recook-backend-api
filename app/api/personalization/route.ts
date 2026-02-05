@@ -5,7 +5,7 @@ import { type AuthenticatedRequest, withAuth } from "@/lib/authMiddleware";
 import connectDB from "@/lib/mongoConnect";
 import Personalization from "@/models/Personalization";
 
-async function handlePOST(req: AuthenticatedRequest) {
+async function handlePOST(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
 
@@ -74,7 +74,7 @@ async function handlePOST(req: AuthenticatedRequest) {
   }
 }
 
-async function handleGET(req: AuthenticatedRequest) {
+async function handleGET(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
 
@@ -124,7 +124,7 @@ async function handleGET(req: AuthenticatedRequest) {
   }
 }
 
-async function handlePATCH(req: AuthenticatedRequest) {
+async function handlePATCH(req: AuthenticatedRequest, context: { params: Promise<Record<string, never>> }) {
   try {
     const userId = req.user?.userId;
 

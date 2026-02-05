@@ -2,6 +2,7 @@
 import { type Document, model, models, Schema, type Types } from "mongoose";
 
 export interface IComment {
+  _id?: Types.ObjectId;
   userId: Types.ObjectId;
   content: string;
   createdAt: Date;
@@ -34,7 +35,6 @@ const CommentSchema = new Schema<IComment>(
       default: Date.now,
     },
   },
-  { _id: false },
 );
 
 const PostSchema = new Schema<IPost>(

@@ -7,13 +7,16 @@ export interface AuthenticatedRequest extends NextRequest {
   user?: JWTPayload;
 }
 
-export function withAuth(
+export function withAuth<TContext = { params: Promise<Record<string, never>> }>(
   handler: (
     req: AuthenticatedRequest,
-    context?: unknown,
+    context: TContext
   ) => Promise<NextResponse>,
 ) {
-  return async (req: AuthenticatedRequest, context?: unknown) => {
+  return async (
+    req: AuthenticatedRequest,
+    context: TContext
+  ) => {
     return withCors(req, async () => {
       try {
         // Get token from Authorization header
